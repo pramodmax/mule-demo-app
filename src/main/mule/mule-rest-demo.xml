@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:jms="http://www.mulesoft.org/schema/mule/jms" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/jms http://www.mulesoft.org/schema/mule/jms/current/mule-jms.xsd">
+	<jms:config name="JMS_Config" doc:name="JMS Config" doc:id="99e56497-c4d0-4cd8-aa29-6048e8a36e3a" >
+		<jms:active-mq-connection clientId="mule-producer" username="${amq.username}" password="${amq.password}" >
+			<jms:factory-configuration brokerUrl="${jms.broker.url}" />
+		</jms:active-mq-connection>
+	</jms:config>
+	<flow name="mule-rest-demoFlow" doc:id="140ce3e0-0a3a-433b-a127-387004c85c3c" >
+		<http:listener doc:name="/POST employee" doc:id="0666ecc6-ddba-4c8f-afaa-6d0e8baf1a04" config-ref="HTTP_Listener_config" path="/employee"/>
+		<logger level="INFO" doc:name="Logger" doc:id="a6939ce6-faa2-4a3b-8eae-7c62b878acae" message="Employee flow triggered with data : #[payload]"/>
+		<jms:publish doc:name="Publish" doc:id="8cda30fd-50a3-4452-9a5b-ac1eb34bf7a5" config-ref="JMS_Config" destination="amq:employee" sendCorrelationId="AUTO"/>
+		<set-payload value='&lt;?xml version="1.0" encoding="UTF-8" ?&gt; &lt;response&gt;success&lt;/response&gt;' doc:name="Set Payload" doc:id="09da0e53-0c6d-4959-a0b0-53d80b1b8e77" />
+	</flow>
+</mule>

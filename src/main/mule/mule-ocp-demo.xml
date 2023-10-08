@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="4d0371df-7978-4c6a-a6d2-039b7769e825" >
+		<http:listener-connection host="0.0.0.0" port="8080" />
+	</http:listener-config>
+	<flow name="HelloFlow" doc:id="4cbd49d8-d1e7-4c18-8f00-6b4f44be321e" >
+		<http:listener doc:name="/GET Hello" doc:id="161dd5f9-977b-4efd-b915-4636ebd46f49" config-ref="HTTP_Listener_config" path="/hello" allowedMethods="GET"/>
+		<set-payload value="Hello World from OpenShift" doc:name="Set Payload" doc:id="899dcb63-655a-4de7-ab51-bcbd8a567934" />
+	</flow>
+</mule>
